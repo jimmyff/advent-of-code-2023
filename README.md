@@ -15,7 +15,7 @@
 
 ```
 
-[View solutions](https://github.com/jimmyff/advent-of-code-2023/tree/main/lib/puzzles) to the [Advent of Code 2023](https://adventofcode.com/2023) by [jimmyff](https://github.com/jimmyff). #dartlang
+[View solutions](https://github.com/jimmyff/advent-of-code-2023/tree/main/lib/day) to the [Advent of Code 2023](https://adventofcode.com/2023) by [jimmyff](https://github.com/jimmyff). #dartlang
 
 ## Usage
 
