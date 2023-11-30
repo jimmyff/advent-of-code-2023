@@ -3,7 +3,7 @@ library puzzles;
 import 'dart:io';
 import 'dart:convert';
 import 'package:logging/logging.dart';
-import 'day/01/solutions_01.dart';
+import 'day/01/day_01.dart';
 
 /// Part of a daily puzzle
 class PuzzlePart {
@@ -30,12 +30,13 @@ class PuzzleResult<T> {
 }
 
 typedef DaySolutionFactory = AdventOfCodeDay Function();
-final allSolutions = <int, DaySolutionFactory>{1: () => Solutions01()};
+final allSolutions = <int, DaySolutionFactory>{1: () => Day01()};
 
 abstract class AdventOfCodeDay {
   List<PuzzleResult Function(PuzzleContext ctx)> solutions();
 
-  static solve({required int day, required PuzzleContext ctx}) {
+  static PuzzleContext solve(
+      {required int day, required PuzzleContext ctx, String? sampleInput}) {
     if (!allSolutions.containsKey(day)) {
       ctx.log.severe('Day $day is not implemented yet!');
       exit(1);
@@ -52,12 +53,13 @@ abstract class AdventOfCodeDay {
       var partIdx = solutions.indexOf(part);
 
       // read input file
+
       final inputFile = File('${dayPath}input_part_${partIdx + 1}.txt');
       final inputData =
           inputFile.existsSync() ? inputFile.readAsStringSync() : null;
       ctx.log.fine(
           'Solving part ${partIdx + 1} ${inputData != null ? '(with input)' : ''}...');
-      ctx.parts.add(PuzzlePart(input: inputData));
+      ctx.parts.add(PuzzlePart(input: sampleInput ?? inputData));
 
       // solve
       ctx.part().result = part(ctx);
@@ -69,5 +71,6 @@ abstract class AdventOfCodeDay {
             utf8.encode(json.encode(ctx.part().result?.data)));
       }
     }
+    return ctx;
   }
 }
