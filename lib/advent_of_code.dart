@@ -18,6 +18,7 @@ class PuzzleContext {
   final Logger log;
   List<PuzzlePart> parts = [];
   PuzzlePart part([int? i]) => i == null ? parts.last : parts[i];
+  String? get input => part().input;
   PuzzleContext({required this.log, required this.day});
 }
 
@@ -35,7 +36,27 @@ final allSolutions = <int, DaySolutionFactory>{1: () => Day01()};
 abstract class AdventOfCodeDay {
   List<PuzzleResult Function(PuzzleContext ctx)> solutions();
 
-  static PuzzleContext solve(
+  static AdventOfCodeDay day(int day) => allSolutions[day]!();
+
+  static PuzzleContext solvePart({
+    required PuzzleContext ctx,
+    required AdventOfCodeDay day,
+    required int partIndex,
+    required String? input,
+  }) {
+    final parts = day.solutions();
+
+    if (parts.length < partIndex) {
+      throw RangeError('Part $partIndex solution not implemented!');
+    }
+
+    ctx.log.info('Solving day ${ctx.day} part $partIndex...');
+    ctx.parts.add(PuzzlePart(input: input));
+    ctx.part().result = parts[partIndex](ctx);
+    return ctx;
+  }
+
+  static PuzzleContext solveAllParts(
       {required int day, required PuzzleContext ctx, String? sampleInput}) {
     if (!allSolutions.containsKey(day)) {
       ctx.log.severe('Day $day is not implemented yet!');
@@ -53,7 +74,6 @@ abstract class AdventOfCodeDay {
       var partIdx = solutions.indexOf(part);
 
       // read input file
-
       final inputFile = File('${dayPath}input_part_${partIdx + 1}.txt');
       final inputData =
           inputFile.existsSync() ? inputFile.readAsStringSync() : null;
@@ -64,12 +84,6 @@ abstract class AdventOfCodeDay {
       // solve
       ctx.part().result = part(ctx);
       ctx.log.info('Part ${partIdx + 1} result=${ctx.part().result}');
-
-      // write output file
-      if (ctx.part().result != null) {
-        File('${dayPath}output_part_${partIdx + 1}.json').writeAsBytesSync(
-            utf8.encode(json.encode(ctx.part().result?.data)));
-      }
     }
     return ctx;
   }

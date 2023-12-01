@@ -23,5 +23,5 @@ void main(List<String> arguments) {
 
   // Solve puzzle
   final context = PuzzleContext(log: log, day: day);
-  AdventOfCodeDay.solve(day: day, ctx: context);
+  AdventOfCodeDay.solveAllParts(day: day, ctx: context);
 }
