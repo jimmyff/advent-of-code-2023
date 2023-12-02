@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:logging/logging.dart';
 import 'day/01/day_01.dart';
+import 'day/02/day_02.dart';
 
 /// Part of a daily puzzle
 class PuzzlePart {
@@ -31,7 +32,10 @@ class PuzzleResult<T> {
 }
 
 typedef DaySolutionFactory = AdventOfCodeDay Function();
-final allSolutions = <int, DaySolutionFactory>{1: () => Day01()};
+final allSolutions = <int, DaySolutionFactory>{
+  1: () => Day01(),
+  2: () => Day02(),
+};
 
 abstract class AdventOfCodeDay {
   List<PuzzleResult Function(PuzzleContext ctx)> solutions();
